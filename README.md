@@ -7,13 +7,11 @@ A Python automation tool for checking SSL/TLS certificates, validating certifica
 - Check SSL/TLS certificates for individual domains
 - Check multiple domains from a file
 - Detect certificate validity
-- Display certificate issuer
-- Display certificate subject
-- Display certificate issue date
-- Display certificate expiration date
+- Display certificate issuer and subject
+- Display certificate issue and expiration dates
 - Calculate remaining certificate lifetime
 - Configure expiration warning thresholds
-- JSON output for automation
+- Generate JSON output for automation
 - Handle invalid and unreachable certificates
 - Automated unit tests with pytest
 - Manual verification with OpenSSL
@@ -26,6 +24,7 @@ A Python automation tool for checking SSL/TLS certificates, validating certifica
 - Python `ssl` module
 - OpenSSL
 - pytest
+- Git
 - GitHub Actions
 
 ## Project Structure
@@ -64,17 +63,17 @@ Install dependencies:
 
 pip install -r requirements.txt
 Usage
-Check a single domain
+Check a Single Domain
 python src/ssl_checker.py google.com
-Check multiple domains
+Check Multiple Domains
 python src/ssl_checker.py --file domains.txt
-Configure expiration warning
+Configure Expiration Warning
 python src/ssl_checker.py google.com --warning-days 30
 
 Certificates with remaining lifetime at or below the configured threshold are reported as:
 
 EXPIRING_SOON
-JSON output
+JSON Output
 python src/ssl_checker.py --file domains.txt --json
 
 Example:
@@ -97,7 +96,7 @@ Run the automated test suite:
 
 pytest -v
 
-Current test coverage includes:
+Current tests cover:
 
 Certificate date parsing
 Domain file loading
@@ -107,7 +106,7 @@ Certificate information can be independently verified using OpenSSL:
 
 openssl s_client -connect google.com:443 -servername google.com </dev/null 2>/dev/null | openssl x509 -noout -subject -issuer -dates
 
-This can be compared against the information reported by the Python SSL checker.
+The OpenSSL output can be compared with the information reported by the Python SSL checker.
 
 GitHub Actions
 
@@ -132,7 +131,7 @@ Scheduled monitoring is configured for:
 09:00 Nigeria time
 Exit Codes
 
-The script exits successfully when monitored certificates are valid or within the warning state.
+The script exits successfully when monitored certificates are valid or within the configured warning state.
 
 It returns a non-zero exit status when a certificate is:
 
@@ -141,7 +140,7 @@ Expired
 Unreachable
 Unable to be checked
 
-This allows GitHub Actions or other automation systems to detect certificate problems.
+This allows GitHub Actions and other automation systems to detect certificate problems.
 
 Example
 ============================================================
@@ -167,7 +166,7 @@ CI automation
 Scheduled monitoring
 Error handling
 JSON-based reporting
-Infrastructure/service reliability monitoring
+Service reliability monitoring
 Future Improvements
 
 Potential future enhancements include:
